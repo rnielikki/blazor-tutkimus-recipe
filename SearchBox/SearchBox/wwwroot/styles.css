@@ -1,0 +1,98 @@
+﻿.keyword-container {
+    text-align:center;
+    margin:0.5rem;
+}
+.keyword-searchbox {
+    display: inline-flex;
+    border: 1px solid #666;
+    padding: 0.15rem;
+    margin-right:.6rem;
+    border-radius: 0.3rem;
+    color: #000;
+}
+    .keyword-searchbox:focus-within {
+        border: 2px solid #000;
+        background-color: #b6ff00;
+    }
+    .keyword-searchbox .searchbox-words {
+        flex-shrink: 1;
+    }
+        .keyword-searchbox .searchbox-words div {
+            display: inline-block;
+            background-color: #ffd800;
+            border: 1px solid #ff6a00;
+            border-radius: 0.25rem;
+            padding: 0 0.28rem;
+        }
+    .keyword-searchbox .searchbox-container {
+        flex-grow: 1;
+        position: relative;
+        overflow: visible;
+    }
+        .searchbox-words, .searchbox-wordlist {
+            text-align:left;
+        }
+        .searchbox-wordlist {
+            display:none;
+            position:absolute;
+            left:0;
+            top:100%;
+            border:1px solid #bb00ca;
+            border-radius:0.2rem;
+            padding:0;
+            background-color: #f5b8cc;
+        }
+            .searchbox-wordlist p {
+                margin-bottom:0;
+                padding:0.1rem 0.18rem;
+            }
+                .searchbox-wordlist p:hover {
+                    background-color:#4d3b3b;
+                }
+                .searchbox-wordlist p.item-selected {
+                    background-color:darkmagenta;
+                }
+                .searchbox-wordlist p:hover, .searchbox-wordlist p.item-selected {
+                    color:#fff;
+                }
+    .keyword-searchbox .searchbox-input {
+        border: 0;
+        margin-left: 0.3rem;
+        background-color: transparent;
+        width:100%;
+    }
+            .keyword-searchbox .searchbox-input:focus {
+                outline: none;
+            }
+            .searchbox-input:focus + .searchbox-wordlist, .searchbox-wordlist:hover {
+                display:block;
+            }
+.keyword-search, .keyword-searchbox {
+    vertical-align:middle;
+}
+.keyword-buttons {
+    display:inline-block;
+}
+.keyword-search {
+    background-color: #7d408e;
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    display: inline-block;
+    border-radius: 0.278rem;
+}
+    .keyword-search:hover {
+        color:#fff;
+        text-decoration:none;
+        background-color:#000;
+    }
+.keyword-reset {
+    background-color:#963939;
+}
+@media screen and (max-width:680px) {
+    .keyword-searchbox {
+        flex-direction:column;
+    }
+    .keyword-buttons {
+        margin-top:0.35rem;
+    }
+}

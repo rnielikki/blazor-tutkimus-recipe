@@ -1,0 +1,53 @@
+﻿@using System.Linq;
+@using Microsoft.AspNetCore.Components.Routing;
+
+<div class="keyword-container">
+    <div class="keyword-searchbox">
+        <div class="searchbox-words">
+        @foreach(var word in _wordModel._addedWords){
+            <div>@word 
+                <span @onclick="@(_=>_wordHandler.DeleteWord(@word))">&times;</span>
+            </div>
+        }
+        </div>
+        <div class="searchbox-container">
+        <input type="text" class="searchbox-input" @oninput="@_wordHandler.OnWordEntered" value="@_wordModel.WordInput" @onkeydown="@_wordHandler.OnKeyInput" />
+        @if (_wordHandler.ShowSuggestions)
+        {
+            <div class="searchbox-wordlist">
+                @foreach(string suggestion in _wordModel._suggestions)
+                {
+                    <p @onclick="@(_=>_wordHandler.AddWord(suggestion))" class="@((suggestion==_suggestionIterator.Current)?"item-selected":"")">@suggestion</p>
+                }
+            </div>
+        }
+        </div>
+    </div>
+    <div class="keyword-buttons">
+        <NavLink class="keyword-search" href="@URI" @onclick="@(_wordHandler.Search)">Search</NavLink>
+        <NavLink class="keyword-search keyword-reset" href="@ResetURI" @onclick="@(_wordHandler.Reset)">Reset</NavLink>
+    </div>
+</div>
+@code{
+    [Parameter]
+    public System.Collections.ObjectModel.ReadOnlyCollection<string> WordList { get; set; }
+    [Parameter]
+    public Func<IList<string>, Task> OnSearch { get; set; }
+    [Parameter]
+    public Func<Task> OnReset { get; set; }
+    [Parameter]
+    public string URI { get; set; } = "";
+    [Parameter]
+    public string ResetURI { get; set; }
+    private WordModel _wordModel;
+    private WordHandler _wordHandler;
+    private SuggestionIterator _suggestionIterator;
+
+
+    protected override void OnInitialized() {
+        _wordModel = new WordModel(WordList.Distinct().ToList());
+        _wordHandler = new WordHandler(_wordModel, OnSearch, OnReset);
+        _suggestionIterator = _wordHandler.SuggestionIterator;
+        if (ResetURI == null) ResetURI = URI;
+    }
+}

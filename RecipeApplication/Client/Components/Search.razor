@@ -1,0 +1,16 @@
+﻿@namespace RecipeApplication
+@using KeywordSearchBox
+@using RecipeApplication.Shared;
+@inject IRecipeModel RecipeModel
+@inject HttpClient Http
+
+<SearchBox WordList=@(new List<string>() { "Egg", "Eggplant", "Milk", "Salt", "Sugar", "Cucumber", "Carrot", "Wheat flour", "Rye flour", "Water", "Chicken", "Salmon", "Coffee", "Potato" }.AsReadOnly())
+           URI="Counter" ResetURI="/" OnSearch="@FindRecipe"></SearchBox>
+
+@code {
+    private async Task FindRecipe(IList<string> data)
+    {
+        await Task.Delay(5000);
+        //RecipeModel.data = await Http.PostJsonAsync<IEnumerable<string>>("api/Recipe", data);
+    }
+}
