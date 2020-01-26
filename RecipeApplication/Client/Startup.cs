@@ -8,7 +8,6 @@ namespace RecipeApplication.Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IRecipeModel, RecipeModel>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

@@ -12,7 +12,7 @@ namespace RecipeApplication.Server
 {
     public class Startup
     {
-        public IConfiguration Configuration;
+        public IConfiguration Configuration { get; set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,7 +28,6 @@ namespace RecipeApplication.Server
                     new[] { "application/octet-stream" });
             });
             services.AddDbContext<RecipeContext>(options=>options.UseSqlServer(Configuration.GetConnectionString("RecipeDatabase")));
-   
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

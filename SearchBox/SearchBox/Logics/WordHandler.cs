@@ -8,37 +8,37 @@ namespace KeywordSearchBox
 {
     partial class WordHandler
     {
-        private Func<IList<string>, Task> _searchAction { get; set; }
-        private Func<Task> _resetAction { get; set; }
-        private WordModel _wordModel { get; set; }
+        private Func<IList<string>, Task> SearchAction { get; set; }
+        private Func<Task> ResetAction { get; set; }
+        private WordModel wordModel { get; set; }
 
         internal bool ShowSuggestions = false;
         internal SuggestionIterator SuggestionIterator { get; private set; }
 
         private CancellationTokenSource _cancellationSource;
-        internal WordHandler(WordModel wordModel, Func<IList<string>, Task> searchAction, Func<Task> resetAction=null)
+        internal WordHandler(WordModel wordModel, Func<IList<string>, Task> searcher, Func<Task> resetter=null)
         {
-            _wordModel = wordModel;
-            _searchAction = searchAction;
-            if (_searchAction != null)
+            this.wordModel = wordModel;
+            SearchAction = searcher;
+            if (SearchAction != null)
             {
-                _resetAction = resetAction ?? (async ()=> { await searchAction(_wordModel.AvailableWordList.ToList()); });
+                ResetAction = resetter ?? (async ()=> { await searcher(this.wordModel.AvailableWordList.ToList()); });
             }
-            SuggestionIterator = new SuggestionIterator(_wordModel.AvailableWordList.ToList());
+            SuggestionIterator = new SuggestionIterator(this.wordModel.AvailableWordList.ToList());
         }
         internal void AddWord(string word)
         {
-            _wordModel._addedWords.Add(word);
-            _wordModel.AvailableWordList.Remove(word);
-            _wordModel.WordInput = "";
+            wordModel._addedWords.Add(word);
+            wordModel.AvailableWordList.Remove(word);
+            wordModel.WordInput = "";
             ShowSuggestions = false;
             SetSuggestions();
         }
 
         internal void DeleteWord(string word)
         {
-            if (!_wordModel._addedWords.Remove(word)) return;
-            _wordModel.AvailableWordList.Add(word);
+            if (!wordModel._addedWords.Remove(word)) return;
+            wordModel.AvailableWordList.Add(word);
         }
         internal async Task Search()
         {
@@ -48,14 +48,14 @@ namespace KeywordSearchBox
             }
             using (_cancellationSource = new CancellationTokenSource())
             {
-                if (_wordModel._addedWords.Count == 0)
+                if (wordModel._addedWords.Count == 0)
                 {
-                    await Task.Run(_resetAction, _cancellationSource.Token).ConfigureAwait(false);
+                    await Task.Run(ResetAction, _cancellationSource.Token).ConfigureAwait(false);
                     //await _resetAction?.Invoke();
                 }
                 else
                 {
-                    await Task.Run(() => _searchAction(_wordModel._addedWords), _cancellationSource.Token).ConfigureAwait(false);
+                    await Task.Run(() => SearchAction(wordModel._addedWords), _cancellationSource.Token).ConfigureAwait(false);
                     //await _searchAction?.Invoke(_wordModel._addedWords);
                 }
             }
@@ -63,14 +63,14 @@ namespace KeywordSearchBox
         }
         internal async Task Reset()
         {
-            _wordModel.AvailableWordList.UnionWith(_wordModel._addedWords);
-            _wordModel._addedWords.Clear();
+            wordModel.AvailableWordList.UnionWith(wordModel._addedWords);
+            wordModel._addedWords.Clear();
             await Search();
         }
         private void SetSuggestions()
         {
-            _wordModel._suggestions = _wordModel.AvailableWordList.Where(word => word.StartsWith(_wordModel.WordInput, true, System.Globalization.CultureInfo.CurrentCulture)).ToList();
-            SuggestionIterator.OnListChanged(_wordModel._suggestions);
+            wordModel._suggestions = wordModel.AvailableWordList.Where(word => word.StartsWith(wordModel.WordInput, true, System.Globalization.CultureInfo.CurrentCulture)).ToList();
+            SuggestionIterator.OnListChanged(wordModel._suggestions);
         }
     }
 }

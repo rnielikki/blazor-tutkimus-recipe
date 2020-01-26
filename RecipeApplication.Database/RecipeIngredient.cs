@@ -5,6 +5,7 @@ using System.Text;
 
 namespace RecipeApplication.Database
 {
+    #region Required
     public class RecipeIngredient
     {
         [Key]
@@ -15,4 +16,5 @@ namespace RecipeApplication.Database
         public virtual Recipe Recipe { get; set; }
         public virtual Ingredient Ingredient { get; set; }
     }
+    #endregion
 }

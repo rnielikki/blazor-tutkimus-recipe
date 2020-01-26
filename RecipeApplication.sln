@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipeApplication.Shared", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeywordSearchBox", "SearchBox\SearchBox\KeywordSearchBox.csproj", "{88AB6D90-2E9F-446E-97B9-26481B688368}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeApplication.Database", "RecipeApplication.Database\RecipeApplication.Database.csproj", "{E4C3DC32-08A0-4821-A62B-E7392A9B08C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipeApplication.Database", "RecipeApplication.Database\RecipeApplication.Database.csproj", "{E4C3DC32-08A0-4821-A62B-E7392A9B08C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeApplication.Managers", "RecipeApplication.Managers\RecipeApplication.Managers.csproj", "{7008EF23-DA8D-43EB-BB0F-C54938A2CEA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{E4C3DC32-08A0-4821-A62B-E7392A9B08C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4C3DC32-08A0-4821-A62B-E7392A9B08C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4C3DC32-08A0-4821-A62B-E7392A9B08C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7008EF23-DA8D-43EB-BB0F-C54938A2CEA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7008EF23-DA8D-43EB-BB0F-C54938A2CEA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7008EF23-DA8D-43EB-BB0F-C54938A2CEA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7008EF23-DA8D-43EB-BB0F-C54938A2CEA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
