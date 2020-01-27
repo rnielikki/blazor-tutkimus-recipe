@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace RecipeApplication.Managers
 {
-    class IngredientManager:ManagerBase
+    public class IngredientsManager : ManagerBase
     {
-        public IngredientManager(RecipeContext recipeContext) : base(recipeContext) { }
-        public async Task<ICollection<Ingredient>> GetIngredients() => await _recipeContext.Ingredients.ToListAsync();
+        public IngredientsManager(RecipeContext recipeContext) : base(recipeContext) { }
+        public async Task<IEnumerable<Ingredient>> GetIngredients() => await _recipeContext.Ingredients.ToListAsync();
         public async Task<bool> AddIngredient(Ingredient ingredient)
         {
             try

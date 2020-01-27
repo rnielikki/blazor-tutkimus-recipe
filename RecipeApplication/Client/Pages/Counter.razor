@@ -1,10 +1,10 @@
 ﻿@page "/counter"
-@inject RecipeApplication.Shared.IRecipeModel RecipeModel
+
+<Search></Search>
 
 <h1>Counter</h1>
 
 <p>Current count: @currentCount</p>
-<p>@RecipeModel.data</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 

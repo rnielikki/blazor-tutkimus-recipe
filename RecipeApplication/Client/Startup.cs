@@ -1,6 +1,7 @@
+using KeywordSearchBox;
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using RecipeApplication.Shared;
+using RecipeApplication.Database;
 
 namespace RecipeApplication.Client
 {
@@ -8,6 +9,7 @@ namespace RecipeApplication.Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<ISearchModel<Recipe>, SearchModel<Recipe>>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

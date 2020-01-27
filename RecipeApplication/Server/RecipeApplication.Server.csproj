@@ -21,8 +21,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\RecipeApplication.Database\RecipeApplication.Database.csproj" />
+    <ProjectReference Include="..\..\RecipeApplication.Managers\RecipeApplication.Managers.csproj" />
     <ProjectReference Include="..\Client\RecipeApplication.Client.csproj" />
-    <ProjectReference Include="..\Shared\RecipeApplication.Shared.csproj" />
   </ItemGroup>
 
 </Project>

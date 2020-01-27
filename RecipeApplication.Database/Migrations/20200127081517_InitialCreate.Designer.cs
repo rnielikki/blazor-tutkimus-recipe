@@ -9,7 +9,7 @@ using RecipeApplication.Database;
 namespace RecipeApplication.Database.Migrations
 {
     [DbContext(typeof(RecipeContext))]
-    [Migration("20200126184706_InitialCreate")]
+    [Migration("20200127081517_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,10 +31,6 @@ namespace RecipeApplication.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
-
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("ID");
 
@@ -77,6 +73,10 @@ namespace RecipeApplication.Database.Migrations
 
                     b.Property<int>("RecipeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("Id");
 

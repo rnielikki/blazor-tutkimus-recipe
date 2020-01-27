@@ -12,8 +12,7 @@ namespace RecipeApplication.Database.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(maxLength: 30, nullable: false),
-                    Unit = table.Column<string>(type: "nvarchar(10)", nullable: false)
+                    Name = table.Column<string>(maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,6 +41,7 @@ namespace RecipeApplication.Database.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RecipeId = table.Column<int>(nullable: false),
                     IngredientId = table.Column<int>(nullable: false),
+                    Unit = table.Column<string>(type: "nvarchar(10)", nullable: false),
                     Amount = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>

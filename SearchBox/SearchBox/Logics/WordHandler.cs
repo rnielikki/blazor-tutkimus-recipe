@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -11,15 +12,17 @@ namespace KeywordSearchBox
         private Func<IList<string>, Task> SearchAction { get; set; }
         private Func<Task> ResetAction { get; set; }
         private WordModel wordModel { get; set; }
+        private string Uri { get; set; }
 
         internal bool ShowSuggestions = false;
         internal SuggestionIterator SuggestionIterator { get; private set; }
 
         private CancellationTokenSource _cancellationSource;
-        internal WordHandler(WordModel wordModel, Func<IList<string>, Task> searcher, Func<Task> resetter=null)
+        internal WordHandler(NavigationManager navigator, WordModel wordModel, string searchUri, Func<IList<string>, Task> searcher, Func<Task> resetter=null)
         {
+            Uri = searchUri;
             this.wordModel = wordModel;
-            SearchAction = searcher;
+            SearchAction = (async (IList<string> words) => { await searcher(words); navigator.NavigateTo(Uri); });
             if (SearchAction != null)
             {
                 ResetAction = resetter ?? (async ()=> { await searcher(this.wordModel.AvailableWordList.ToList()); });

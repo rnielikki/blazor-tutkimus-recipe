@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using RecipeApplication.Database;
 using Microsoft.Extensions.Configuration;
 using System.Linq;
+using RecipeApplication.Managers;
 
 namespace RecipeApplication.Server
 {
@@ -28,6 +29,8 @@ namespace RecipeApplication.Server
                     new[] { "application/octet-stream" });
             });
             services.AddDbContext<RecipeContext>(options=>options.UseSqlServer(Configuration.GetConnectionString("RecipeDatabase")));
+            services.AddTransient<IngredientsManager>();
+            services.AddTransient<RecipesManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

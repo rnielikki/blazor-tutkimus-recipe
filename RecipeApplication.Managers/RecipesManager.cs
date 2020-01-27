@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 
 namespace RecipeApplication.Managers
 {
-    public class RecipeManager : ManagerBase
+    public class RecipesManager : ManagerBase
     {
-        public RecipeManager(RecipeContext recipeContext) : base(recipeContext) { }
-        public async Task<ICollection<Recipe>> FindRecpies(IEnumerable<string> ingredients)
+        public RecipesManager(RecipeContext recipeContext) : base(recipeContext) { }
+        public async Task<IEnumerable<Recipe>> FindRecpies(IEnumerable<string> ingredients)
         {
-            return await _recipeContext.Recipes
+            //the ingredient should not be long, and the length is saved for future.
+            int ingredientLength = ingredients.Count();
+            var yieldDB = _recipeContext.Recipes.AsAsyncEnumerable();
+           
+            return await yieldDB
                 .Where(recipe => !ingredients
-                    .Except(recipe.RecipeIngredients
-                        .Select(recipeIngredient => recipeIngredient.Ingredient.Name))
-                    .Any()).ToListAsync();
+                    .Except(recipe.RecipeIngredients.Select(recipeIngredient => recipeIngredient.Ingredient.Name)).Any())
+                .ToListAsync();
         }
         public async Task<bool> AddRecipe(Recipe recipe)
         {

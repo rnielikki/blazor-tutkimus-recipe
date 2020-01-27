@@ -1,5 +1,6 @@
 ﻿@using System.Linq;
 @using Microsoft.AspNetCore.Components.Routing;
+@inject  NavigationManager Navigator
 
 <div class="keyword-container">
     <div class="keyword-searchbox">
@@ -24,21 +25,19 @@
         </div>
     </div>
     <div class="keyword-buttons">
-        <NavLink class="keyword-search" href="@URI" @onclick="@(_wordHandler.Search)">Search</NavLink>
-        <NavLink class="keyword-search keyword-reset" href="@ResetURI" @onclick="@(_wordHandler.Reset)">Reset</NavLink>
+        <NavLink class="keyword-search" @onclick="@(_wordHandler.Search)">Search</NavLink>
+        <NavLink class="keyword-search keyword-reset" @onclick="@(_wordHandler.Reset)">Reset</NavLink>
     </div>
 </div>
 @code{
     [Parameter]
-    public System.Collections.ObjectModel.ReadOnlyCollection<string> WordList { get; set; }
+    public IReadOnlyCollection<string> WordList { get; set; }
     [Parameter]
     public Func<IList<string>, Task> OnSearch { get; set; }
     [Parameter]
     public Func<Task> OnReset { get; set; }
     [Parameter]
-    public string URI { get; set; } = "";
-    [Parameter]
-    public string ResetURI { get; set; }
+    public string Uri { get; set; }
     private WordModel _wordModel;
     private WordHandler _wordHandler;
     private SuggestionIterator _suggestionIterator;
@@ -46,8 +45,7 @@
 
     protected override void OnInitialized() {
         _wordModel = new WordModel(WordList.Distinct().ToList());
-        _wordHandler = new WordHandler(_wordModel, OnSearch, OnReset);
+        _wordHandler = new WordHandler(Navigator, _wordModel, Uri, OnSearch, OnReset);
         _suggestionIterator = _wordHandler.SuggestionIterator;
-        if (ResetURI == null) ResetURI = URI;
     }
 }

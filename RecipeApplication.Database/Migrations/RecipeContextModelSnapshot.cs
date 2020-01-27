@@ -30,10 +30,6 @@ namespace RecipeApplication.Database.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
-                    b.Property<string>("Unit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
-
                     b.HasKey("ID");
 
                     b.ToTable("Ingredients");
@@ -75,6 +71,10 @@ namespace RecipeApplication.Database.Migrations
 
                     b.Property<int>("RecipeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Unit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("Id");
 

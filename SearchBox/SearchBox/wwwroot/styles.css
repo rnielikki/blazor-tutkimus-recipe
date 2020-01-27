@@ -43,7 +43,7 @@
             background-color: #f5b8cc;
         }
             .searchbox-wordlist p {
-                margin-bottom:0;
+                margin:0;
                 padding:0.1rem 0.18rem;
             }
                 .searchbox-wordlist p:hover {
@@ -82,6 +82,7 @@
 }
     .keyword-search:hover {
         color:#fff;
+        cursor:pointer;
         text-decoration:none;
         background-color:#000;
     }
