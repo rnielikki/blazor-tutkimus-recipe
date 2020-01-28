@@ -12,7 +12,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Blazor.DevServer" Version="3.1.0-preview4.19579.2" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\RecipeApplication.Database\RecipeApplication.Database.csproj" />
+    <ProjectReference Include="..\..\RecipeApplication.Models\RecipeApplication.Models.csproj" />
     <ProjectReference Include="..\..\SearchBox\SearchBox\KeywordSearchBox.csproj" />
   </ItemGroup>
 

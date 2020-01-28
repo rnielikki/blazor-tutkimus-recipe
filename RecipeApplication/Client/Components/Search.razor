@@ -2,7 +2,6 @@
 @using KeywordSearchBox
 @using System.Collections.Generic;
 @inject HttpClient Http
-@inject ISearchModel<RecipeApplication.Database.Recipe> recipe;
 
 @if (IngredientNames == null)
 {
@@ -11,18 +10,25 @@
 else
 {
     <SearchBox WordList=@(IngredientNames)
-               OnSearch="@FindRecipe" Uri="Counter"></SearchBox>
+               OnSearch="@model.FindAsync" Uri="/"></SearchBox>
 }
 
 @code {
+    [Parameter]
+    public ISearchModel model { get; set; }
+    [Parameter]
+    public IComponent refreshTarget { get; set; }
     private IReadOnlyCollection<string> IngredientNames;
     protected override async Task OnInitializedAsync()
     {
         IngredientNames = (await Http.GetJsonAsync<IEnumerable<string>>("api/Ingredients")).ToList().AsReadOnly();
     }
+    /*
     private async Task FindRecipe(IList<string> data)
     {
-        recipe.Keywords = data;
-        recipe.Results = await Http.PostJsonAsync<IEnumerable<RecipeApplication.Database.Recipe>>("api/Recipes/Search", data);
+        model.Keywords = data;
+        //recipe.Results = await Http.PostJsonAsync<IEnumerable<RecipeApplication.Database.Recipe>>("api/Recipes/Search", data);
+        model.Results = await Http.GetJsonAsync<IEnumerable<RecipeApplication.Database.Recipe>>("api/Recipes/Search");
     }
+    */
 }

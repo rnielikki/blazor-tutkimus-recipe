@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using RecipeApplication.Managers;
+using RecipeApplication.Models;
 using System.Threading.Tasks;
 
 namespace RecipeApplication.Server.Controllers
@@ -15,9 +15,15 @@ namespace RecipeApplication.Server.Controllers
             RecipeActions = recipe;
         }
         [HttpPost("Search")]
-        public async Task<IEnumerable<Database.Recipe>> Post([FromBody]IEnumerable<string> content)
+        public async Task<IEnumerable<RecipeDto>> Post([FromBody]IEnumerable<string> content)
         {
             return await RecipeActions.FindRecpies(content);
         }
+        [HttpGet("Search")]
+        public async Task<IEnumerable<RecipeDto>> Get()
+        {
+            return await RecipeActions.FindRecpies(new List<string>() { "Salmon"});
+        }
+
     }
 }

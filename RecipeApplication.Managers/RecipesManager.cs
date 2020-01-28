@@ -2,6 +2,7 @@
 using RecipeApplication.Database;
 using System.Collections.Generic;
 using System.Linq;
+using RecipeApplication.Models;
 using System.Threading.Tasks;
 
 namespace RecipeApplication.Managers
@@ -9,16 +10,34 @@ namespace RecipeApplication.Managers
     public class RecipesManager : ManagerBase
     {
         public RecipesManager(RecipeContext recipeContext) : base(recipeContext) { }
-        public async Task<IEnumerable<Recipe>> FindRecpies(IEnumerable<string> ingredients)
+        public async Task<IEnumerable<RecipeDto>> FindRecpies(IEnumerable<string> ingredients)
         {
-            //the ingredient should not be long, and the length is saved for future.
-            int ingredientLength = ingredients.Count();
-            var yieldDB = _recipeContext.Recipes.AsAsyncEnumerable();
-           
+            var yieldDB = _recipeContext.Recipes
+                .Include(recipe=>recipe.RecipeIngredients)
+                    .ThenInclude(ri => ri.Ingredient)
+                .AsAsyncEnumerable();
+
+            var ingredientIds = await _recipeContext.Ingredients.AsAsyncEnumerable().Where(i => ingredients.Contains(i.Name)).Select(i => i.ID).ToListAsync();
+
             return await yieldDB
-                .Where(recipe => !ingredients
-                    .Except(recipe.RecipeIngredients.Select(recipeIngredient => recipeIngredient.Ingredient.Name)).Any())
-                .ToListAsync();
+                    .Where(recipe => !ingredientIds
+                    .Except(recipe.RecipeIngredients.Select(ri => ri.IngredientId)).Any())
+                .Select(r =>
+                    new RecipeDto
+                    {
+                        ID = r.ID,
+                        FoodName = r.FoodName,
+                        Content = r.Content,
+                        Ingredients = r.RecipeIngredients.Select(ri => new IngredientDto
+                        {
+                            ID = ri.Ingredient.ID,
+                            Name = ri.Ingredient.Name,
+                            Unit = ri.Unit.ToString(),
+                            Amount = ri.Amount
+                        })
+
+                    }
+                    ).ToListAsync();
         }
         public async Task<bool> AddRecipe(Recipe recipe)
         {

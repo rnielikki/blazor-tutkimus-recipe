@@ -13,6 +13,7 @@ namespace RecipeApplication.Database
         public int IngredientId { get; set; }
         [Column(TypeName = "nvarchar(10)")]
         public IngredientUnit Unit { get; set; } //NOTE: Can convert by implementing some methods.
+        [Required]
         public decimal Amount { get; set; }
         public virtual Recipe Recipe { get; set; }
         public virtual Ingredient Ingredient { get; set; }

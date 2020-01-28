@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RecipeApplication.Database\RecipeApplication.Database.csproj" />
+    <ProjectReference Include="..\RecipeApplication.Models\RecipeApplication.Models.csproj" />
   </ItemGroup>
 
 </Project>

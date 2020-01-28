@@ -1,5 +1,34 @@
 ﻿@page "/"
+@inject ISearchModel SearchModel;
+@inject HttpClient Http
 
-<Search></Search>
+<Search model="SearchModel" refreshTarget="this"></Search>
 
-<p>Hello World.</p>
+@if (SearchModel?.Results != null)
+{
+    @foreach (var result in SearchModel.Results)
+    {
+        <h2>@result.FoodName</h2>
+        <h3>Ingredients</h3>
+        <div>
+            @if (result.Ingredients != null)
+            @foreach (var SearchModelingredient in result.Ingredients)
+            {
+                <p>@SearchModelingredient.Name;</p>
+                <p>@SearchModelingredient.Amount @SearchModelingredient.Unit</p>
+                }
+        </div>
+        <h3>How to make</h3>
+        <div>@result.Content</div>
+    }
+
+}
+@code{
+    protected override void OnInitialized()
+    {
+        if (SearchModel is SearchModel model) {
+            model.RefreshActions -= StateHasChanged;
+            model.RefreshActions += StateHasChanged;
+        }
+    }
+}
