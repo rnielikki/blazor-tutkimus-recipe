@@ -14,26 +14,34 @@ else
                OnSearch="@FindRecipe" @bind-ResultData="model"></SearchBox>
     @if (model?.Results != null)
     {
+        <div class="result-list">
         @foreach (var result in model.Results)
         {
-            <h2>@result.FoodName</h2>
-            <h3>Ingredients</h3>
-            <div>
-                @if (result.Ingredients != null)
-                    @foreach (var SearchModelingredient in result.Ingredients)
+        <div class="result-list-item">
+            <h2><a href="Recipe/@result.ID">@result.FoodName</a></h2>
+            <h3>Ingredients Contains</h3>
+            <div class="result-list-section">
+                @foreach (var SearchModelingredient in result.Ingredients)
+                {
+                    if (model.Keywords.Contains(SearchModelingredient.Name))
                     {
-                        <p>@SearchModelingredient.Name;</p>
-                        <p>@SearchModelingredient.Amount @SearchModelingredient.Unit</p>
+                    <div class="result-list-ingredient">
+                        <span style="font-weight:600">@SearchModelingredient.Name;</span>
+                        <span>@SearchModelingredient.Amount @SearchModelingredient.Unit</span>
+                    </div>
                     }
+                }
             </div>
-            <h3>How to make</h3>
-            <div>@result.Content</div>
+            <div class="result-list-section result-list-summary">@CutSummary(result.Content)</div>
+        </div>
         }
+        </div>
 
     }
 }
 
 @code {
+    private const int MaxSummaryLength = 200;
     [Parameter]
     public RenderFragment ResultTemplate { get; set; }
     private IReadOnlyCollection<string> IngredientNames;
@@ -46,4 +54,5 @@ else
         model.Keywords = data;
         model.Results = await Http.PostJsonAsync<IEnumerable<RecipeApplication.Models.RecipeDto>>("api/Recipes/Search", data);
     }
+    private string CutSummary(string summary) => (summary.Length < MaxSummaryLength) ? summary : summary.Substring(0, MaxSummaryLength) + "...";
 }

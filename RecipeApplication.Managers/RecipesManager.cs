@@ -39,5 +39,25 @@ namespace RecipeApplication.Managers
                     }
                     ).ToListAsync();
         }
+        public async Task<RecipeDto> GetRecipe(int Id)
+        {
+            var data = _recipeContext.Recipes.AsQueryable().Where(recipe=>recipe.ID==Id).Include(recipe => recipe.RecipeIngredients).ThenInclude(ri => ri.Ingredient).FirstOrDefault();
+            if (data == null) return null;
+            return new RecipeDto
+            {
+                ID = data.ID,
+                FoodName = data.FoodName,
+                Content = data.Content,
+                Ingredients = data.RecipeIngredients.Select(ri => new IngredientDto
+                {
+                    ID = ri.Ingredient.ID,
+                    Name = ri.Ingredient.Name,
+                    Unit = ri.Unit.ToString(),
+                    Amount = ri.Amount
+                })
+
+            };
+
+        }
     }
 }

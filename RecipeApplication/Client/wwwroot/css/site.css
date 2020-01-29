@@ -8,15 +8,14 @@ html, body, app, .main {
     width:100%;
 }
 
-a, .btn-link {
+a {
     color: #0366d6;
+    text-decoration: none;
+    padding: 0rem 0.36rem;
 }
-
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-}
+    a:hover {
+        background-color:#efefef;
+    }
 
 app {
     position: relative;

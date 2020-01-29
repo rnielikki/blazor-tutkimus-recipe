@@ -56,6 +56,9 @@
         {
             OnReset = (async ()=> { await OnSearch(WordList.ToList()); });
         }
+        if (ResultData is ISearchModel resultData && resultData?.Keywords != null) {
+            wordHandler.SetRange(resultData.Keywords);
+        }
     }
     private async Task Search(IList<string> data)
     {

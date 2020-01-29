@@ -11,10 +11,5 @@ namespace KeywordSearchBox
     {
         public IEnumerable<string> Keywords { get; set; }
         public IEnumerable<T> Results { get; set; }
-        public event Action RefreshActions;
-        internal void RefreshComponent()
-        {
-            RefreshActions?.Invoke();
-        }
     }
 }

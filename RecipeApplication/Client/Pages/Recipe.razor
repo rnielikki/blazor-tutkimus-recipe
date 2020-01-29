@@ -1,0 +1,58 @@
+﻿@page "/Recipe/{Id:int}"
+@using KeywordSearchBox;
+@using RecipeApplication.Models;
+@inject ISearchModel<RecipeDto> SearchItems;
+@inject HttpClient Http;
+@inject NavigationManager Navigator
+
+@if (recipe == null)
+{
+    if (!WrongResult)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        <p>Not found.</p>
+    }
+}
+else
+{
+    <a href="/" class="navigator">Back</a>
+    <div class="recipe">
+    <h2>@recipe.FoodName</h2>
+    <h3>Ingredients</h3>
+    <div class="recipe-table">
+        @if (recipe.Ingredients != null)
+            @foreach (var SearchModelingredient in recipe.Ingredients)
+            {
+                <div class="recipe-table-row">
+                    <div class="recipe-table-name">@SearchModelingredient.Name</div>
+                    <div class="recipe-table-amount">@SearchModelingredient.Amount.ToString("0.##")</div>
+                    <div class="recipe-table-unit">@SearchModelingredient.Unit</div>
+                </div>
+            }
+    </div>
+    <h3>How to make</h3>
+    <div class="recipe-content">@recipe.Content</div>
+    </div>
+}
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private RecipeDto recipe;
+    private bool WrongResult = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            recipe = SearchItems?.Results?.Where(recipe => recipe.ID == Id)?.FirstOrDefault() ?? await Http.GetJsonAsync<RecipeDto>($"api/Recipes/{Id}");
+            if (recipe == null) WrongResult = true;
+        }
+        catch (System.Text.Json.JsonException)
+        {
+            WrongResult = true;
+        }
+    }
+}

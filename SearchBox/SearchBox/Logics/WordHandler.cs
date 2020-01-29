@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -17,14 +16,11 @@ namespace KeywordSearchBox
         internal SuggestionIterator SuggestionIterator { get; private set; }
 
         private CancellationTokenSource _cancellationSource;
-        internal WordHandler(WordModel wordModel, Func<IList<string>, Task> searcher, Func<Task> resetter=null)
+        internal WordHandler(WordModel wordModel, Func<IList<string>, Task> searcher, Func<Task> resetter)
         {
             this.wordModel = wordModel;
             SearchAction = searcher;
-            if (SearchAction != null)
-            {
-                ResetAction = resetter ?? (async ()=> { await searcher(this.wordModel.AvailableWordList.ToList()); });
-            }
+            ResetAction = resetter;
             SuggestionIterator = new SuggestionIterator(this.wordModel.AvailableWordList.ToList());
         }
         internal void AddWord(string word)
@@ -70,6 +66,10 @@ namespace KeywordSearchBox
         {
             wordModel.Suggestions = wordModel.AvailableWordList.Where(word => word.StartsWith(wordModel.WordInput, true, System.Globalization.CultureInfo.CurrentCulture)).ToList();
             SuggestionIterator.OnListChanged(wordModel.Suggestions);
+        }
+        internal void SetRange(IEnumerable<string> range) {
+            wordModel.AddedWords = range.ToList();
+            wordModel.AvailableWordList = new SortedSet<string>(wordModel.AvailableWordList.Except(range));
         }
     }
 }

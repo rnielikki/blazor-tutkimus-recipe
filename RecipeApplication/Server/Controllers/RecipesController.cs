@@ -14,6 +14,11 @@ namespace RecipeApplication.Server.Controllers
         public RecipesController(RecipesManager recipe) {
             RecipeActions = recipe;
         }
+        [HttpGet("{Id}")]
+        public async Task<RecipeDto> Get(int id)
+        {
+            return await RecipeActions.GetRecipe(id);
+        }
         [HttpPost("Search")]
         public async Task<IEnumerable<RecipeDto>> Post([FromBody]IEnumerable<string> content)
         {

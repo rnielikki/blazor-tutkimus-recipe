@@ -1,0 +1,25 @@
+﻿.result-list {
+}
+
+.result-list-item {
+    border: 1px solid #ccc;
+    padding: 0 1.5rem 1.278rem 1.5rem;
+}
+
+    .result-list-item h2 {
+        margin-bottom:0.1rem;
+    }
+    .result-list-item h3 {
+        margin: 0 0 0.273rem 0;
+    }
+
+.result-list-section {
+}
+
+.result-list-ingredient {
+}
+.result-list-summary {
+    padding: 0.574rem 0.287rem;
+    margin-top: 0.5rem;
+    background-color: #efefef;
+}

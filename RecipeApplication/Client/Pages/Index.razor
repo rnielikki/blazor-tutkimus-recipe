@@ -3,14 +3,3 @@
 
 <Search>
 </Search>
-
-@code{
-    protected override void OnInitialized()
-    {
-        if (SearchModel is KeywordSearchBox.SearchModel<RecipeApplication.Models.RecipeDto> model) {
-            model.RefreshActions -= StateHasChanged;
-            model.RefreshActions += StateHasChanged;
-        }
-    }
-}
-
