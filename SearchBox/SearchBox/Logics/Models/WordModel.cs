@@ -6,13 +6,12 @@ namespace KeywordSearchBox
     {
         internal SortedSet<string> AvailableWordList;
         public string WordInput { get; internal set; } = "";
-        internal List<string> _suggestions;
-        public IReadOnlyList<string> Suggestions { get => _suggestions.AsReadOnly(); }
-        internal List<string> _addedWords = new List<string>();
-        public IReadOnlyList<string> AddedWords { get => _addedWords.AsReadOnly(); } //ordered list
-        public WordModel(IList<string> WordList)
+        public IList<string> Suggestions { get; internal set; }
+        public IList<string> AddedWords { get; internal set; } //ordered list
+        internal WordModel(IList<string> WordList)
         {
             AvailableWordList = new SortedSet<string>(WordList);
+            AddedWords = new List<string>();
         }
     }
 }

@@ -25,9 +25,9 @@ namespace KeywordSearchBox
                     }
                     break;
                 case "Backspace":
-                    if (string.IsNullOrEmpty(wordModel.WordInput) && wordModel._addedWords.Count != 0)
+                    if (string.IsNullOrEmpty(wordModel.WordInput) && wordModel.AddedWords.Count != 0)
                     {
-                        DeleteWord(wordModel._addedWords.Last());
+                        DeleteWord(wordModel.AddedWords.Last());
                     }
                     break;
                 case "ArrowUp":

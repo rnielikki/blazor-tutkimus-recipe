@@ -17,7 +17,7 @@ namespace RecipeApplication.Server.Controllers
         }
         [HttpGet]
         public async Task<IEnumerable<string>> Get() {
-            return (await IngredientActions.GetIngredients()).Select(ingredient => ingredient.Name);
+            return await IngredientActions.GetIngredientsList();
         }
     }
 }

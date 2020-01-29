@@ -10,7 +10,7 @@ namespace RecipeApplication.Server.Controllers
     [ApiController]
     public class RecipesController : ControllerBase
     {
-        private RecipesManager RecipeActions;
+        private readonly RecipesManager RecipeActions;
         public RecipesController(RecipesManager recipe) {
             RecipeActions = recipe;
         }
@@ -19,11 +19,5 @@ namespace RecipeApplication.Server.Controllers
         {
             return await RecipeActions.FindRecpies(content);
         }
-        [HttpGet("Search")]
-        public async Task<IEnumerable<RecipeDto>> Get()
-        {
-            return await RecipeActions.FindRecpies(new List<string>() { "Salmon"});
-        }
-
     }
 }

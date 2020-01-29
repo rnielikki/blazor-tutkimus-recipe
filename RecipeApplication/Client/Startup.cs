@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using RecipeApplication.Models;
+using KeywordSearchBox;
 
 namespace RecipeApplication.Client
 {
@@ -7,7 +9,7 @@ namespace RecipeApplication.Client
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ISearchModel, SearchModel>();
+            services.AddSingleton<ISearchModel<RecipeDto>, SearchModel<RecipeDto>>();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

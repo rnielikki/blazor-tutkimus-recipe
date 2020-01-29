@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipeApplication.Managers"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{B5A2DEF8-641D-4C09-8C70-9D6A835C4726}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeApplication.Models", "RecipeApplication.Models\RecipeApplication.Models.csproj", "{D5EA673D-2F40-4844-B92D-52B7CB2EB90E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipeApplication.Models", "RecipeApplication.Models\RecipeApplication.Models.csproj", "{D5EA673D-2F40-4844-B92D-52B7CB2EB90E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

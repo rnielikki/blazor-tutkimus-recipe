@@ -12,17 +12,15 @@ namespace KeywordSearchBox
         private Func<IList<string>, Task> SearchAction { get; set; }
         private Func<Task> ResetAction { get; set; }
         private WordModel wordModel { get; set; }
-        private string Uri { get; set; }
 
         internal bool ShowSuggestions = false;
         internal SuggestionIterator SuggestionIterator { get; private set; }
 
         private CancellationTokenSource _cancellationSource;
-        internal WordHandler(NavigationManager navigator, WordModel wordModel, string searchUri, Func<IList<string>, Task> searcher, Func<Task> resetter=null)
+        internal WordHandler(WordModel wordModel, Func<IList<string>, Task> searcher, Func<Task> resetter=null)
         {
-            Uri = searchUri;
             this.wordModel = wordModel;
-            SearchAction = (async (IList<string> words) => { await searcher(words); navigator.NavigateTo(Uri); });
+            SearchAction = searcher;
             if (SearchAction != null)
             {
                 ResetAction = resetter ?? (async ()=> { await searcher(this.wordModel.AvailableWordList.ToList()); });
@@ -31,7 +29,7 @@ namespace KeywordSearchBox
         }
         internal void AddWord(string word)
         {
-            wordModel._addedWords.Add(word);
+            wordModel.AddedWords.Add(word);
             wordModel.AvailableWordList.Remove(word);
             wordModel.WordInput = "";
             ShowSuggestions = false;
@@ -40,7 +38,7 @@ namespace KeywordSearchBox
 
         internal void DeleteWord(string word)
         {
-            if (!wordModel._addedWords.Remove(word)) return;
+            if (!wordModel.AddedWords.Remove(word)) return;
             wordModel.AvailableWordList.Add(word);
         }
         internal async Task Search()
@@ -51,29 +49,27 @@ namespace KeywordSearchBox
             }
             using (_cancellationSource = new CancellationTokenSource())
             {
-                if (wordModel._addedWords.Count == 0)
+                if (wordModel.AddedWords.Count == 0)
                 {
                     await Task.Run(ResetAction, _cancellationSource.Token).ConfigureAwait(false);
-                    //await _resetAction?.Invoke();
                 }
                 else
                 {
-                    await Task.Run(() => SearchAction(wordModel._addedWords), _cancellationSource.Token).ConfigureAwait(false);
-                    //await _searchAction?.Invoke(_wordModel._addedWords);
+                    await Task.Run(() => SearchAction(wordModel.AddedWords), _cancellationSource.Token).ConfigureAwait(false);
                 }
             }
             _cancellationSource = null;
         }
         internal async Task Reset()
         {
-            wordModel.AvailableWordList.UnionWith(wordModel._addedWords);
-            wordModel._addedWords.Clear();
+            wordModel.AvailableWordList.UnionWith(wordModel.AddedWords);
+            wordModel.AddedWords.Clear();
             await Search();
         }
         private void SetSuggestions()
         {
-            wordModel._suggestions = wordModel.AvailableWordList.Where(word => word.StartsWith(wordModel.WordInput, true, System.Globalization.CultureInfo.CurrentCulture)).ToList();
-            SuggestionIterator.OnListChanged(wordModel._suggestions);
+            wordModel.Suggestions = wordModel.AvailableWordList.Where(word => word.StartsWith(wordModel.WordInput, true, System.Globalization.CultureInfo.CurrentCulture)).ToList();
+            SuggestionIterator.OnListChanged(wordModel.Suggestions);
         }
     }
 }

@@ -39,18 +39,5 @@ namespace RecipeApplication.Managers
                     }
                     ).ToListAsync();
         }
-        public async Task<bool> AddRecipe(Recipe recipe)
-        {
-            try
-            {
-                await _recipeContext.Recipes.AddAsync(recipe);
-                await _recipeContext.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                return false;
-            }
-            return true;
-        }
     }
 }

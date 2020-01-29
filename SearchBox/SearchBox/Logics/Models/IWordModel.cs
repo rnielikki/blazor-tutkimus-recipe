@@ -7,7 +7,7 @@ namespace KeywordSearchBox
     public interface IWordModel
     {
         string WordInput { get; }
-        IReadOnlyList<string> Suggestions { get; }
-        IReadOnlyList<string> AddedWords { get; } 
+        IList<string> Suggestions { get; }
+        IList<string> AddedWords { get; } 
     }
 }

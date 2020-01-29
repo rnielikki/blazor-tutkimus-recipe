@@ -1,32 +1,33 @@
-﻿@using System.Linq;
+﻿@typeparam T
+@using System.Linq;
 @using Microsoft.AspNetCore.Components.Routing;
-@inject  NavigationManager Navigator
 
 <div class="keyword-container">
     <div class="keyword-searchbox">
         <div class="searchbox-words">
-        @foreach(var word in _wordModel._addedWords){
+        @foreach (var word in _wordModel.AddedWords)
+        {
             <div>@word 
-                <span @onclick="@(_=>_wordHandler.DeleteWord(@word))">&times;</span>
+                <span @onclick="@(_ => wordHandler.DeleteWord(@word))">&times;</span>
             </div>
         }
         </div>
         <div class="searchbox-container">
-        <input type="text" class="searchbox-input" @oninput="@_wordHandler.OnWordEntered" value="@_wordModel.WordInput" @onkeydown="@_wordHandler.OnKeyInput" />
-        @if (_wordHandler.ShowSuggestions)
+        <input type="text" class="searchbox-input" @oninput="@wordHandler.OnWordEntered" value="@_wordModel.WordInput" @onkeydown="@wordHandler.OnKeyInput" />
+        @if (wordHandler.ShowSuggestions)
         {
             <div class="searchbox-wordlist">
-                @foreach(string suggestion in _wordModel._suggestions)
+                @foreach (string suggestion in _wordModel.Suggestions)
                 {
-                    <p @onclick="@(_=>_wordHandler.AddWord(suggestion))" class="@((suggestion==_suggestionIterator.Current)?"item-selected":"")">@suggestion</p>
+                    <p @onclick="@(_ => wordHandler.AddWord(suggestion))" class="@((suggestion == _suggestionIterator.Current) ? "item-selected" : "")">@suggestion</p>
                 }
             </div>
         }
         </div>
     </div>
     <div class="keyword-buttons">
-        <NavLink class="keyword-search" @onclick="@(_wordHandler.Search)">Search</NavLink>
-        <NavLink class="keyword-search keyword-reset" @onclick="@(_wordHandler.Reset)">Reset</NavLink>
+        <NavLink class="keyword-search" @onclick="@(wordHandler.Search)">Search</NavLink>
+        <NavLink class="keyword-search keyword-reset" @onclick="@(wordHandler.Reset)">Reset</NavLink>
     </div>
 </div>
 @code{
@@ -36,16 +37,34 @@
     public Func<IList<string>, Task> OnSearch { get; set; }
     [Parameter]
     public Func<Task> OnReset { get; set; }
+
     [Parameter]
-    public string Uri { get; set; }
+    public T ResultData { get; set; }
+    [Parameter]
+    public Microsoft.AspNetCore.Components.EventCallback<T> ResultDataChanged { get; set; }
+
     private WordModel _wordModel;
-    private WordHandler _wordHandler;
+    internal WordHandler wordHandler;
     private SuggestionIterator _suggestionIterator;
 
 
     protected override void OnInitialized() {
         _wordModel = new WordModel(WordList.Distinct().ToList());
-        _wordHandler = new WordHandler(Navigator, _wordModel, Uri, OnSearch, OnReset);
-        _suggestionIterator = _wordHandler.SuggestionIterator;
+        wordHandler = new WordHandler(_wordModel, Search, Reset);
+        _suggestionIterator = wordHandler.SuggestionIterator;
+        if (OnReset == null)
+        {
+            OnReset = (async ()=> { await OnSearch(WordList.ToList()); });
+        }
+    }
+    private async Task Search(IList<string> data)
+    {
+        await OnSearch(data);
+        await ResultDataChanged.InvokeAsync(ResultData);
+    }
+    private async Task Reset()
+    {
+        await OnReset();
+        await ResultDataChanged.InvokeAsync(ResultData);
     }
 }

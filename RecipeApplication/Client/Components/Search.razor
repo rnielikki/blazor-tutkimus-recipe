@@ -1,6 +1,7 @@
 ﻿@namespace RecipeApplication
 @using KeywordSearchBox
 @using System.Collections.Generic;
+@inject KeywordSearchBox.ISearchModel<RecipeApplication.Models.RecipeDto> model;
 @inject HttpClient Http
 
 @if (IngredientNames == null)
@@ -10,25 +11,39 @@
 else
 {
     <SearchBox WordList=@(IngredientNames)
-               OnSearch="@model.FindAsync" Uri="/"></SearchBox>
+               OnSearch="@FindRecipe" @bind-ResultData="model"></SearchBox>
+    @if (model?.Results != null)
+    {
+        @foreach (var result in model.Results)
+        {
+            <h2>@result.FoodName</h2>
+            <h3>Ingredients</h3>
+            <div>
+                @if (result.Ingredients != null)
+                    @foreach (var SearchModelingredient in result.Ingredients)
+                    {
+                        <p>@SearchModelingredient.Name;</p>
+                        <p>@SearchModelingredient.Amount @SearchModelingredient.Unit</p>
+                    }
+            </div>
+            <h3>How to make</h3>
+            <div>@result.Content</div>
+        }
+
+    }
 }
 
 @code {
     [Parameter]
-    public ISearchModel model { get; set; }
-    [Parameter]
-    public IComponent refreshTarget { get; set; }
+    public RenderFragment ResultTemplate { get; set; }
     private IReadOnlyCollection<string> IngredientNames;
     protected override async Task OnInitializedAsync()
     {
         IngredientNames = (await Http.GetJsonAsync<IEnumerable<string>>("api/Ingredients")).ToList().AsReadOnly();
     }
-    /*
     private async Task FindRecipe(IList<string> data)
     {
         model.Keywords = data;
-        //recipe.Results = await Http.PostJsonAsync<IEnumerable<RecipeApplication.Database.Recipe>>("api/Recipes/Search", data);
-        model.Results = await Http.GetJsonAsync<IEnumerable<RecipeApplication.Database.Recipe>>("api/Recipes/Search");
+        model.Results = await Http.PostJsonAsync<IEnumerable<RecipeApplication.Models.RecipeDto>>("api/Recipes/Search", data);
     }
-    */
 }
