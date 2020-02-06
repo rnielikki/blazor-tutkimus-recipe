@@ -8,9 +8,9 @@ namespace KeywordSearchBox
     {
         internal void OnWordEntered(ChangeEventArgs argument)
         {
-            wordModel.WordInput = argument.Value as string;
+            WordModel.WordInput = argument.Value as string;
             SetSuggestions();
-            ShowSuggestions = (wordModel.Suggestions != null && !string.IsNullOrEmpty(wordModel.WordInput) && Enumerable.Any(wordModel.Suggestions));
+            ShowSuggestions = (WordModel.Suggestions != null && !string.IsNullOrEmpty(WordModel.WordInput) && Enumerable.Any(WordModel.Suggestions));
         }
         internal void OnKeyInput(KeyboardEventArgs args)
         {
@@ -25,9 +25,9 @@ namespace KeywordSearchBox
                     }
                     break;
                 case "Backspace":
-                    if (string.IsNullOrEmpty(wordModel.WordInput) && wordModel.AddedWords.Count != 0)
+                    if (string.IsNullOrEmpty(WordModel.WordInput) && WordModel.AddedWords.Count != 0)
                     {
-                        DeleteWord(wordModel.AddedWords.Last());
+                        DeleteWord(WordModel.AddedWords.Last());
                     }
                     break;
                 case "ArrowUp":

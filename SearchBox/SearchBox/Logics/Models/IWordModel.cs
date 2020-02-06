@@ -4,10 +4,11 @@ using System.Text;
 
 namespace KeywordSearchBox
 {
-    public interface IWordModel
+    internal interface IWordModel
     {
-        string WordInput { get; }
-        IList<string> Suggestions { get; }
-        IList<string> AddedWords { get; } 
+        SortedSet<string> AvailableWordList { get; set; }
+        string WordInput { get; set; }
+        IList<string> Suggestions { get; set; }
+        IList<string> AddedWords { get; set; } 
     }
 }

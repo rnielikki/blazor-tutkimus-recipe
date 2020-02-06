@@ -4,38 +4,39 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("KeywordSearchBoxTests")]
 namespace KeywordSearchBox
 {
     partial class WordHandler
     {
         private Func<IList<string>, Task> SearchAction { get; set; }
         private Func<Task> ResetAction { get; set; }
-        private WordModel wordModel { get; set; }
+        private IWordModel WordModel { get; set; }
 
         internal bool ShowSuggestions = false;
         internal SuggestionIterator SuggestionIterator { get; private set; }
 
         private CancellationTokenSource _cancellationSource;
-        internal WordHandler(WordModel wordModel, Func<IList<string>, Task> searcher, Func<Task> resetter)
+        internal WordHandler(IWordModel WordModel, Func<IList<string>, Task> searcher, Func<Task> resetter)
         {
-            this.wordModel = wordModel;
+            this.WordModel = WordModel;
             SearchAction = searcher;
             ResetAction = resetter;
-            SuggestionIterator = new SuggestionIterator(this.wordModel.AvailableWordList.ToList());
+            SuggestionIterator = new SuggestionIterator(this.WordModel.AvailableWordList.ToList());
         }
         internal void AddWord(string word)
         {
-            wordModel.AddedWords.Add(word);
-            wordModel.AvailableWordList.Remove(word);
-            wordModel.WordInput = "";
+            if (!WordModel.AvailableWordList.Remove(word)) return;
+            WordModel.AddedWords.Add(word);
+            WordModel.WordInput = "";
             ShowSuggestions = false;
             SetSuggestions();
         }
 
         internal void DeleteWord(string word)
         {
-            if (!wordModel.AddedWords.Remove(word)) return;
-            wordModel.AvailableWordList.Add(word);
+            if (!WordModel.AddedWords.Remove(word)) return;
+            WordModel.AvailableWordList.Add(word);
         }
         internal async Task Search()
         {
@@ -45,31 +46,31 @@ namespace KeywordSearchBox
             }
             using (_cancellationSource = new CancellationTokenSource())
             {
-                if (wordModel.AddedWords.Count == 0)
+                if (WordModel.AddedWords.Count == 0)
                 {
                     await Task.Run(ResetAction, _cancellationSource.Token).ConfigureAwait(false);
                 }
                 else
                 {
-                    await Task.Run(() => SearchAction(wordModel.AddedWords), _cancellationSource.Token).ConfigureAwait(false);
+                    await Task.Run(() => SearchAction(WordModel.AddedWords), _cancellationSource.Token).ConfigureAwait(false);
                 }
             }
             _cancellationSource = null;
         }
         internal async Task Reset()
         {
-            wordModel.AvailableWordList.UnionWith(wordModel.AddedWords);
-            wordModel.AddedWords.Clear();
+            WordModel.AvailableWordList.UnionWith(WordModel.AddedWords);
+            WordModel.AddedWords.Clear();
             await Search();
         }
         private void SetSuggestions()
         {
-            wordModel.Suggestions = wordModel.AvailableWordList.Where(word => word.StartsWith(wordModel.WordInput, true, System.Globalization.CultureInfo.CurrentCulture)).ToList();
-            SuggestionIterator.OnListChanged(wordModel.Suggestions);
+            WordModel.Suggestions = WordModel.AvailableWordList.Where(word => word.StartsWith(WordModel.WordInput, true, System.Globalization.CultureInfo.CurrentCulture)).ToList();
+            SuggestionIterator.OnListChanged(WordModel.Suggestions);
         }
         internal void SetRange(IEnumerable<string> range) {
-            wordModel.AddedWords = range.ToList();
-            wordModel.AvailableWordList = new SortedSet<string>(wordModel.AvailableWordList.Except(range));
+            WordModel.AddedWords = range.ToList();
+            WordModel.AvailableWordList = new SortedSet<string>(WordModel.AvailableWordList.Except(range));
         }
     }
 }

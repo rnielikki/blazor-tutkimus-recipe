@@ -2,12 +2,12 @@
 
 namespace KeywordSearchBox
 {
-    public class WordModel : IWordModel
+    internal class WordModel : IWordModel
     {
-        internal SortedSet<string> AvailableWordList;
-        public string WordInput { get; internal set; } = "";
-        public IList<string> Suggestions { get; internal set; }
-        public IList<string> AddedWords { get; internal set; } //ordered list
+        public SortedSet<string> AvailableWordList{ get; set; }
+        public string WordInput { get; set; } = "";
+        public IList<string> Suggestions { get; set; }
+        public IList<string> AddedWords { get; set; } //ordered list
         internal WordModel(IList<string> WordList)
         {
             AvailableWordList = new SortedSet<string>(WordList);

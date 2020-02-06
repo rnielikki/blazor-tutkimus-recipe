@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeywordSearchBox", "SearchBox\KeywordSearchBox.csproj", "{07F82484-2136-4C38-89CE-9706CB528ECF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeywordSearchBoxTest", "WordSearchBoxTest\KeywordSearchBoxTest.csproj", "{0E2923E7-9C27-47CF-90D8-44B5D7370F6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeywordSearchBoxTests", "WordSearchBoxTest\KeywordSearchBoxTests.csproj", "{0E2923E7-9C27-47CF-90D8-44B5D7370F6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,5 @@
 ﻿@typeparam T
 @using System.Linq;
-@using Microsoft.AspNetCore.Components.Routing;
 
 <div class="keyword-container">
     <div class="keyword-searchbox">
@@ -26,8 +25,8 @@
         </div>
     </div>
     <div class="keyword-buttons">
-        <NavLink class="keyword-search" @onclick="@(wordHandler.Search)">Search</NavLink>
-        <NavLink class="keyword-search keyword-reset" @onclick="@(wordHandler.Reset)">Reset</NavLink>
+        <a class="keyword-search" @onclick="@(wordHandler.Search)">Search</a>
+        <a class="keyword-search keyword-reset" @onclick="@(wordHandler.Reset)">Reset</a>
     </div>
 </div>
 @code{
@@ -43,7 +42,7 @@
     [Parameter]
     public Microsoft.AspNetCore.Components.EventCallback<T> ResultDataChanged { get; set; }
 
-    private WordModel _wordModel;
+    private IWordModel _wordModel;
     internal WordHandler wordHandler;
     private SuggestionIterator _suggestionIterator;
 
