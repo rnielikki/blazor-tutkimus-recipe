@@ -2,7 +2,6 @@ using Xunit;
 using System.Collections.Generic;
 using System.Linq;
 using KeywordSearchBox;
-using System.Threading.Tasks;
 
 namespace KeywordSearchBoxTests
 {
@@ -23,6 +22,7 @@ namespace KeywordSearchBoxTests
             @WordHandler.AddWord(existWord);
             Assert.Contains(existWord, model.AddedWords);
             Assert.DoesNotContain(existWord, model.AvailableWordList);
+            Assert.True(string.IsNullOrEmpty(model.WordInput));
 
             //already added, assert that the word is't added anymore
             @WordHandler.AddWord(existWord);
@@ -49,21 +49,12 @@ namespace KeywordSearchBoxTests
             Assert.DoesNotContain(existWord, model.AddedWords);
         }
         [Fact]
-        public async Task ResetWordTest()
-        {
-            IWordModel model = new WordModel(target);
-            WordHandler @WordHandler = new WordHandler(model, (IList<string> s)=> Task.CompletedTask, ()=>Task.CompletedTask);
-            await @WordHandler.Reset();
-            Assert.Empty(model.AddedWords);
-            Assert.True(model.AvailableWordList.SequenceEqual(target.OrderBy(str=>str))); //AvailableWordList is "Sorted"Set.
-        }
-        [Fact]
         public void RangeSetTest()
         {
             IWordModel model = new WordModel(target);
             WordHandler @WordHandler = new WordHandler(model, null, null);
             List<string> ranges = new List<string>() { "apple", "chocolate", "salt" };
-            @WordHandler.SetRange(ranges);
+            model.SetRange(ranges);
             Assert.True(model.AvailableWordList.SequenceEqual(new string[] { "almond", "banana", "sugar", "sweet potato" }));
             Assert.True(model.AddedWords.OrderBy(str=>str).SequenceEqual(ranges));
         }

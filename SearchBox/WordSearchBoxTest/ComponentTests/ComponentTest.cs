@@ -8,20 +8,27 @@ using Egil.RazorComponents.Testing.EventDispatchExtensions;
 using System.Linq;
 using AngleSharp.Dom;
 
-namespace KeywordSearchBoxTests.ComponentTest
+namespace KeywordSearchBoxTests.ComponentTests
 {
     //sample of black box test, Blazor.
-    public class SuggestionTest : ComponentTestFixture
+    public class ComponentTest : ComponentTestFixture
     {
         readonly List<string> words = new List<string>() { "milk", "water", "wheat flour", "white pepper" };
-        private Func<IList<string>, Task> searchAction = (IList<string> s) => Task.CompletedTask;
+        private static SearchState state = SearchState.NotStarted;
+        private enum SearchState { NotStarted, Searched, Resetted };
+        private Func<IList<string>, Task> searchAction = async (IList<string> s) => { await Task.Delay(100); state=SearchState.Searched; };
+        private Func<Task> resetAction = async () => { await Task.Delay(100); state = SearchState.Resetted; };
         [Fact]
-        public void SuggestingTest()
+        public async Task BlackBoxTest()
         {
             var component = RenderComponent<SearchBox<object>>(
                 (nameof(SearchBox<object>.WordList), words.AsReadOnly()),
-                (nameof(SearchBox<object>.OnSearch), searchAction)
+                (nameof(SearchBox<object>.OnSearch), searchAction),
+                (nameof(SearchBox<object>.OnReset), resetAction)
                 );
+
+            //suggesting---------------------------------------------
+
             Assert.Throws<Xunit.Sdk.ElementNotFoundException>(() => component.Find(".searchbox-wordlist"));
             var inputBox = component.Find(".searchbox-input");
             inputBox.Input("w");
@@ -32,16 +39,10 @@ namespace KeywordSearchBoxTests.ComponentTest
             Assert.True(wordList.Children.Select(child => child.TextContent).SequenceEqual(new string[] { "wheat flour", "white pepper" }));
             inputBox.Input("wha");
             Assert.Throws<Xunit.Sdk.ElementNotFoundException>(() => component.Find(".searchbox-wordlist"));
-        }
-        [Fact]
-        public void AddingTest()
-        {
-            Func<IList<string>, Task> searchAction = (IList<string> s) => Task.CompletedTask;
-            var component = RenderComponent<SearchBox<object>>(
-                (nameof(SearchBox<object>.WordList), words.AsReadOnly()),
-                (nameof(SearchBox<object>.OnSearch), searchAction)
-                );
-            var inputBox = component.Find(".searchbox-input");
+
+
+            //adding-deleting words----------------------------------
+
             inputBox.Input("m");
             component.Find(".searchbox-wordlist").FirstElementChild.Click();
             var addedWordsBox = component.Find(".searchbox-words");
@@ -54,6 +55,16 @@ namespace KeywordSearchBoxTests.ComponentTest
             addedWordsBox.LastElementChild.LastElementChild.Click();
             addedWordsBox = component.Find(".searchbox-words");
             Assert.Equal(1, addedWordsBox.ChildElementCount);
+
+            //asynchrounous search -----------------------------------
+
+            var searchButton = component.Find(".keyword-search");
+            var resetButton = component.Find(".keyword-reset");
+            searchButton.Click();
+            await Task.Delay(5);
+            resetButton.Click();
+            await Task.Delay(120);
+            Assert.Equal(SearchState.Resetted, state);
         }
     }
 }

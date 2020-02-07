@@ -67,27 +67,33 @@
             .searchbox-input:focus + .searchbox-wordlist, .searchbox-wordlist:hover {
                 display:block;
             }
-.keyword-search, .keyword-searchbox {
+.keyword-button, .keyword-searchbox {
     vertical-align:middle;
 }
 .keyword-buttons {
-    display:inline-block;
+    display: inline-block;
 }
-.keyword-search {
-    background-color: #7d408e;
+
+.keyword-button {
     color: #fff;
     padding: 0.25rem 0.5rem;
     display: inline-block;
     border-radius: 0.278rem;
 }
-    .keyword-search:hover {
-        color:#fff;
-        cursor:pointer;
-        text-decoration:none;
-        background-color:#000;
+
+    .keyword-button:hover {
+        color: #fff;
+        cursor: pointer;
+        text-decoration: none;
+        background-color: #000;
     }
+
+.keyword-search {
+    background-color: #7d408e;
+}
+
 .keyword-reset {
-    background-color:#963939;
+    background-color: #963939;
 }
 @media screen and (max-width:680px) {
     .keyword-searchbox {
