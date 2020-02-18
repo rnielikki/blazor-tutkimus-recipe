@@ -1,4 +1,7 @@
-﻿.result-list {
+﻿.result-empty {
+    text-align:center;
+    font-size:120%;
+    padding-top:1.5rem;
 }
 
 .result-list-item {
@@ -12,12 +15,6 @@
     .result-list-item h3 {
         margin: 0 0 0.273rem 0;
     }
-
-.result-list-section {
-}
-
-.result-list-ingredient {
-}
 .result-list-summary {
     padding: 0.574rem 0.287rem;
     margin-top: 0.5rem;

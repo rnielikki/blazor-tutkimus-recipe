@@ -1,0 +1,29 @@
+﻿@typeparam T
+
+@if (ResultData?.Results == null)
+{
+    @Default
+}
+else if(!ResultData.Results.Any())
+{
+    @NotFound
+}
+else
+{
+    @foreach (var result in ResultData.Results) {
+        @ResultTemplate(result)
+    }
+}
+
+@code {
+    [Parameter]
+    public RenderFragment Default { get; set; }
+    [Parameter]
+    public RenderFragment NotFound { get; set; }
+    [Parameter]
+    public RenderFragment<T> ResultTemplate { get; set; }
+    [Parameter]
+    public ISearchModel<T> ResultData { get; set; }
+    [Parameter]
+    public Microsoft.AspNetCore.Components.EventCallback<ISearchModel<T>> ResultDataChanged { get; set; }
+}

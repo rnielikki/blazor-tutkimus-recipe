@@ -9,7 +9,8 @@
     margin-top:1.48rem
 }
 .recipe {
-    margin:0;
+    padding: 0.1rem 1.278rem;
+    margin: 0;
 }
 .recipe-table {
     max-width: 30rem;
@@ -35,4 +36,10 @@
 
 .recipe-content {
     white-space: pre-line;
+}
+.navigator {
+    margin:0 0.775rem;
+}
+.navigator:hover {
+    filter: hue-rotate(25deg) brightness(1.35);
 }

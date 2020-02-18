@@ -7,7 +7,7 @@
         @foreach (var word in _wordModel.AddedWords)
         {
             <div>@word 
-                <span @onclick="@(_ => wordHandler.DeleteWord(@word))">&times;</span>
+                <span class="searchbox-delete" @onclick="@(_ => wordHandler.DeleteWord(@word))">&times;</span>
             </div>
         }
         </div>
@@ -38,14 +38,13 @@
     public Func<Task> OnReset { get; set; }
 
     [Parameter]
-    public T ResultData { get; set; }
+    public ISearchModel<T> ResultData { get; set; }
     [Parameter]
-    public Microsoft.AspNetCore.Components.EventCallback<T> ResultDataChanged { get; set; }
+    public Microsoft.AspNetCore.Components.EventCallback<ISearchModel<T>> ResultDataChanged { get; set; }
 
     private IWordModel _wordModel;
     internal WordHandler wordHandler;
     private SuggestionIterator _suggestionIterator;
-
 
     protected override void OnInitialized() {
         _wordModel = new WordModel(WordList.Distinct().ToList());
@@ -61,11 +60,13 @@
     }
     private async Task Search(IList<string> data)
     {
+        if (ResultData.Results == null) ResultData.Results = new List<T>();
         await OnSearch(data);
         await ResultDataChanged.InvokeAsync(ResultData);
     }
     private async Task Reset()
     {
+        ResultData.Results = null;
         await OnReset();
         await ResultDataChanged.InvokeAsync(ResultData);
     }

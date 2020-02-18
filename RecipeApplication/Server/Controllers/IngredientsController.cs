@@ -10,14 +10,14 @@ namespace RecipeApplication.Server.Controllers
     [ApiController]
     public class IngredientsController : ControllerBase
     {
-        private IngredientsManager IngredientActions;
+        private readonly IngredientsManager IngredientActions;
         public IngredientsController(IngredientsManager ingredient)
         {
             IngredientActions = ingredient;
         }
         [HttpGet]
         public async Task<IEnumerable<string>> Get() {
-            return await IngredientActions.GetIngredientsList();
+            return await IngredientActions.GetIngredientsList().ConfigureAwait(false);
         }
     }
 }

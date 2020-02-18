@@ -12,32 +12,45 @@ else
 {
     <SearchBox WordList=@(IngredientNames)
                OnSearch="@FindRecipe" @bind-ResultData="model"></SearchBox>
-    @if (model?.Results != null)
-    {
-        <div class="result-list">
-        @foreach (var result in model.Results)
-        {
-        <div class="result-list-item">
-            <h2><a href="Recipe/@result.ID">@result.FoodName</a></h2>
-            <h3>Ingredients Contains</h3>
-            <div class="result-list-section">
-                @foreach (var SearchModelingredient in result.Ingredients)
-                {
-                    if (model.Keywords.Contains(SearchModelingredient.Name))
-                    {
-                    <div class="result-list-ingredient">
-                        <span style="font-weight:600">@SearchModelingredient.Name;</span>
-                        <span>@SearchModelingredient.Amount @SearchModelingredient.Unit</span>
+    <div class="result-list">
+        <ResultBox @bind-ResultData="model">
+            <Default>
+                <div class="result-empty">
+                    <p>What ingredients do you have? Leave yours, we suggest!</p>
+                </div>
+            </Default>
+            <NotFound>
+                <div class="result-empty">
+                    <p>Oops! You cannot make food with them. Suggestions:</p>
+                    <ul>
+                        <li>Find with less keywords, but not zero.</li>
+                        <li>Let's go to the market to buy fresh foods!</li>
+                        <li>Or just go outside to eat!</li>
+                        <li>Or just order your pizza (:</li>
+                    </ul>
+                </div>
+            </NotFound>
+            <ResultTemplate>
+                <div class="result-list-item">
+                    <h2><a href="Recipe/@context.ID">@context.FoodName</a></h2>
+                    <h3>Ingredients Contains</h3>
+                    <div class="result-list-section">
+                        @foreach (var SearchModelingredient in context.Ingredients)
+                            {
+                                if (model.Keywords.Contains(SearchModelingredient.Name))
+                                {
+                                <div class="result-list-ingredient">
+                                    <span style="font-weight:600">@SearchModelingredient.Name;</span>
+                                    <span>@SearchModelingredient.Amount @SearchModelingredient.Unit</span>
+                                </div>
+                                }
+                            }
                     </div>
-                    }
-                }
-            </div>
-            <div class="result-list-section result-list-summary">@CutSummary(result.Content)</div>
-        </div>
-        }
-        </div>
-
-    }
+                    <div class="result-list-section result-list-summary">@CutSummary(context.Content)</div>
+                </div>
+            </ResultTemplate>
+        </ResultBox>
+    </div>
 }
 
 @code {

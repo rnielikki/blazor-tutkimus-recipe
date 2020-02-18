@@ -7,13 +7,15 @@ html, body, app {
 html, body, app, .main {
     width:100%;
 }
-
-a {
+body {
+    margin:0;
+}
+h2 a {
     color: #0366d6;
     text-decoration: none;
     padding: 0rem 0.36rem;
 }
-    a:hover {
+    h2 a:hover {
         background-color:#efefef;
     }
 
@@ -21,6 +23,11 @@ app {
     position: relative;
     display: flex;
     flex-direction: column;
+}
+.top-row {
+    padding: 0.8rem 1.17rem 0.27rem;
+    background-color: #ffee9a;
+    margin-bottom: 2.17rem;
 }
 #blazor-error-ui {
     background: lightyellow;

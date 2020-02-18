@@ -17,12 +17,12 @@ namespace RecipeApplication.Server.Controllers
         [HttpGet("{Id}")]
         public async Task<RecipeDto> Get(int id)
         {
-            return await RecipeActions.GetRecipe(id);
+            return await RecipeActions.GetRecipe(id).ConfigureAwait(false);
         }
         [HttpPost("Search")]
         public async Task<IEnumerable<RecipeDto>> Post([FromBody]IEnumerable<string> content)
         {
-            return await RecipeActions.FindRecpies(content);
+            return await RecipeActions.FindRecpies(content).ConfigureAwait(false);
         }
     }
 }

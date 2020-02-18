@@ -16,6 +16,7 @@
     }
     .keyword-searchbox .searchbox-words {
         flex-shrink: 1;
+        cursor:default;
     }
         .keyword-searchbox .searchbox-words div {
             display: inline-block;
@@ -23,6 +24,9 @@
             border: 1px solid #ff6a00;
             border-radius: 0.25rem;
             padding: 0 0.28rem;
+        }
+        .keyword-searchbox .searchbox-delete {
+            cursor:pointer;
         }
     .keyword-searchbox .searchbox-container {
         flex-grow: 1;

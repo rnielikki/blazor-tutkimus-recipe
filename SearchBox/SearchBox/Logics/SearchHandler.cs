@@ -8,7 +8,7 @@ namespace KeywordSearchBox
 {
     class SearchHandler
     {
-        private IWordModel Model;
+        private readonly IWordModel Model;
         private Func<IList<string>, Task> SearchAction { get; set; }
         private Func<Task> ResetAction { get; set; }
         internal SearchHandler(IWordModel wordModel, Func<IList<string>, Task> searcher, Func<Task> resetter) {
