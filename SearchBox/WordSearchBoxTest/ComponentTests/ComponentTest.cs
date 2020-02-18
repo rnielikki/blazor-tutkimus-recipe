@@ -16,8 +16,8 @@ namespace KeywordSearchBoxTests.ComponentTests
         readonly List<string> words = new List<string>() { "milk", "water", "wheat flour", "white pepper" };
         private static SearchState state = SearchState.NotStarted;
         private enum SearchState { NotStarted, Searched, Resetted };
-        private Func<IList<string>, Task> searchAction = async (IList<string> s) => { await Task.Delay(200); state=SearchState.Searched; };
-        private Func<Task> resetAction = async () => { await Task.Delay(100); state = SearchState.Resetted; };
+        private readonly Func<IList<string>, Task> searchAction = async (IList<string> s) => { await Task.Delay(200); state=SearchState.Searched; };
+        private readonly Func<Task> resetAction = async () => { await Task.Delay(100); state = SearchState.Resetted; };
         [Fact]
         public async Task BlackBoxTest()
         {

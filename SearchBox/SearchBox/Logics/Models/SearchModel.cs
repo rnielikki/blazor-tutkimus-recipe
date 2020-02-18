@@ -11,5 +11,6 @@ namespace KeywordSearchBox
     {
         public IEnumerable<string> Keywords { get; set; }
         public IEnumerable<T> Results { get; set; }
+        bool ISearchModel.IsReset { get; set; } = true;
     }
 }

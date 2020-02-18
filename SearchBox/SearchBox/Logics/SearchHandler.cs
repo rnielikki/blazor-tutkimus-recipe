@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Text;
 using System.Threading;
 
 namespace KeywordSearchBox
@@ -16,25 +15,17 @@ namespace KeywordSearchBox
             SearchAction = searcher;
             ResetAction = resetter;
         }
-        private CancellationTokenSource _cancellationSource;
+        private readonly CancellationTokenSource _cancellationSource = new CancellationTokenSource();
         internal async Task Search()
         {
-            if (_cancellationSource != null)
+            if (Model.AddedWords.Count == 0)
             {
-                _cancellationSource.Cancel();
+                await Task.Run(ResetAction, _cancellationSource.Token).ConfigureAwait(false);
             }
-            using (_cancellationSource = new CancellationTokenSource())
+            else
             {
-                if (Model.AddedWords.Count == 0)
-                {
-                    await Task.Run(ResetAction, _cancellationSource.Token).ConfigureAwait(false);
-                }
-                else
-                {
-                    await Task.Run(() => SearchAction(Model.AddedWords), _cancellationSource.Token).ConfigureAwait(false);
-                }
+                await Task.Run(() => SearchAction(Model.AddedWords), _cancellationSource.Token).ConfigureAwait(false);
             }
-            _cancellationSource = null;
         }
         internal async Task Reset()
         {

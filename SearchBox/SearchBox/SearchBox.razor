@@ -60,13 +60,13 @@
     }
     private async Task Search(IList<string> data)
     {
-        if (ResultData.Results == null) ResultData.Results = new List<T>();
+        ResultData.IsReset = false;
         await OnSearch(data);
         await ResultDataChanged.InvokeAsync(ResultData);
     }
     private async Task Reset()
     {
-        ResultData.Results = null;
+        ResultData.IsReset = true;
         await OnReset();
         await ResultDataChanged.InvokeAsync(ResultData);
     }
