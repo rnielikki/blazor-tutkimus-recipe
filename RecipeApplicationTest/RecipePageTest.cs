@@ -26,12 +26,11 @@ namespace RecipeApplicationTest
             //placeholder until the feature is done.
             await Task.Delay(100);
             Assert.Equal("Not found.", component.Find("p").TextContent);
-           
         }
         private ISearchModel<RecipeDto> MakeMock()
         {
             var mock = new Mock<ISearchModel<RecipeDto>>();
-            mock.Setup(model => model.Results).Returns(new List<RecipeDto>());
+            mock.SetupGet(model => model.Results).Returns(new List<RecipeDto>());
             return mock.Object;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("DynamicProxyGenAssembly2")]
 namespace KeywordSearchBox
 {
     public interface ISearchModel {
