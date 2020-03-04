@@ -38,8 +38,13 @@
     white-space: pre-line;
 }
 .navigator {
-    margin:0 0.775rem;
+    margin: 0 0.775rem;
+    display: block;
+    margin: 0.65rem 0 -0.75rem 0.47rem;
 }
 .navigator:hover {
     filter: hue-rotate(25deg) brightness(1.35);
 }
+    .navigator img {
+        height:1.28rem;
+    }

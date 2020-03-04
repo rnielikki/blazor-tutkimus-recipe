@@ -6,12 +6,17 @@
 
 @if (IngredientNames == null)
 {
+    <div class="content-search">
     <p style="text-align:center;">Loading...</p>
+    </div>
 }
 else
 {
+    <div class="content-search">
     <SearchBox WordList=@(IngredientNames)
                OnSearch="@FindRecipe" @bind-ResultData="model"></SearchBox>
+
+    </div>
     <div class="result-list">
         <ResultBox @bind-ResultData="model">
             <Default>

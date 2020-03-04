@@ -27,7 +27,6 @@ app {
 .top-row {
     padding: 0.8rem 1.17rem 0.27rem;
     background-color: #ffee9a;
-    margin-bottom: 2.17rem;
 }
 #blazor-error-ui {
     background: lightyellow;
@@ -72,4 +71,7 @@ app {
 .keyword-searchbox
 {
     min-width:60%;
+}
+.content-search {
+    margin:3.36rem 0 1.7rem 0;
 }
