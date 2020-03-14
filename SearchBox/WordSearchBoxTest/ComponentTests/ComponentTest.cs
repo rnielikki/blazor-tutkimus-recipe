@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Xunit;
 using KeywordSearchBox;
-using Egil.RazorComponents.Testing;
+using Bunit;
 using System.Threading.Tasks;
-using Egil.RazorComponents.Testing.EventDispatchExtensions;
 using System.Linq;
 using AngleSharp.Dom;
 
@@ -29,31 +28,28 @@ namespace KeywordSearchBoxTests.ComponentTests
 
             //suggesting---------------------------------------------
 
-            Assert.Throws<Xunit.Sdk.ElementNotFoundException>(() => component.Find(".searchbox-wordlist"));
+            Assert.Throws<ElementNotFoundException>(() => component.Find(".searchbox-wordlist"));
             var inputBox = component.Find(".searchbox-input");
             inputBox.Input("w");
             var wordList = component.Find(".searchbox-wordlist");
             Assert.True(wordList.Children.Select(child => child.TextContent).SequenceEqual(new string[] { "water", "wheat flour", "white pepper" }));
             inputBox.Input("wh");
-            wordList = component.Find(".searchbox-wordlist");
             Assert.True(wordList.Children.Select(child => child.TextContent).SequenceEqual(new string[] { "wheat flour", "white pepper" }));
             inputBox.Input("wha");
-            Assert.Throws<Xunit.Sdk.ElementNotFoundException>(() => component.Find(".searchbox-wordlist"));
+            Assert.Throws<ElementNotFoundException>(() => component.Find(".searchbox-wordlist"));
 
 
             //adding-deleting words----------------------------------
 
             inputBox.Input("m");
-            component.Find(".searchbox-wordlist").FirstElementChild.Click();
+            wordList.FirstElementChild.Click();
             var addedWordsBox = component.Find(".searchbox-words");
             Assert.Equal("milk",addedWordsBox.FirstElementChild.GetNodes<IText>().FirstOrDefault().Data.Trim());
 
             inputBox.Input("w");
-            component.Find(".searchbox-wordlist").FirstElementChild.Click();
-            addedWordsBox = component.Find(".searchbox-words");
+            wordList.FirstElementChild.Click();
             Assert.Equal(2, addedWordsBox.ChildElementCount);
             addedWordsBox.LastElementChild.LastElementChild.Click();
-            addedWordsBox = component.Find(".searchbox-words");
             Assert.Equal(1, addedWordsBox.ChildElementCount);
 
             //asynchrounous search -----------------------------------

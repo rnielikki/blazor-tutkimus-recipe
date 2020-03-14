@@ -17,7 +17,12 @@ namespace RecipeApplication.Server.Controllers
         [HttpGet("{Id}")]
         public async Task<RecipeDto> Get(int id)
         {
-            return await RecipeActions.GetRecipe(id).ConfigureAwait(false);
+            var recipe = await RecipeActions.GetRecipe(id).ConfigureAwait(false);
+            if (recipe == null)
+            {
+                HttpContext.Response.StatusCode = 404;
+            }
+            return recipe;
         }
         [HttpPost("Search")]
         public async Task<IEnumerable<RecipeDto>> Post([FromBody]IEnumerable<string> content)

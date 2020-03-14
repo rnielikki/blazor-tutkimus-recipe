@@ -1,18 +1,21 @@
 ﻿@page "/Recipe/{Id:int}"
-@using KeywordSearchBox;
-@using RecipeApplication.Models;
-@inject ISearchModel<RecipeDto> SearchItems;
-@inject HttpClient Http;
+@using KeywordSearchBox
+@using RecipeApplication.Models
+@using System.Text.Json
+@inject ISearchModel<RecipeDto> SearchItems
+@inject HttpClient Http
 
 @if (recipe == null)
 {
-    if (!WrongResult)
+    if (errorMessage == null)
     {
         <p>Loading...</p>
     }
     else
     {
-        <p>Not found.</p>
+        <div>
+        <p>Not Found.</p>
+        </div>
     }
 }
 else
@@ -40,18 +43,17 @@ else
     [Parameter]
     public int Id { get; set; }
     private RecipeDto recipe;
-    private bool WrongResult = false;
+    private string errorMessage = null;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             recipe = SearchItems?.Results?.Where(recipe => recipe.ID == Id)?.FirstOrDefault() ?? await Http.GetJsonAsync<RecipeDto>($"api/Recipes/{Id}");
-            if (recipe == null) WrongResult = true;
         }
-        catch (System.Text.Json.JsonException)
+        catch (HttpRequestException exception)
         {
-            WrongResult = true;
+            errorMessage = exception.Message;
         }
     }
 }

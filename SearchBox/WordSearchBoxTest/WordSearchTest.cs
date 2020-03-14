@@ -14,8 +14,8 @@ namespace KeywordSearchBoxTests
         public async void AsyncTest()
         {
             List<string> nonConcurrenctList = new List<string>();
-            Func<IList<string>, Task> searchTask = async (IList<string> words) => { await Task.Delay(1); nonConcurrenctList.AddRange(new string[] { "item1", "item2", "item3", "asdf" }); }; 
-            Func<Task> resetTask = async () => { await Task.Delay(1); nonConcurrenctList.Clear(); };
+            async Task searchTask(IList<string> words) { await Task.Delay(1); nonConcurrenctList.AddRange(new string[] { "item1", "item2", "item3", "asdf" }); }
+            async Task resetTask() { await Task.Delay(1); nonConcurrenctList.Clear(); }
             SearchHandler searchHandler = new SearchHandler(new WordModel(new List<string>()), searchTask, resetTask);
 
             //concurrency pressure test: do without awaiting
